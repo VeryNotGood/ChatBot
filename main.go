@@ -12,7 +12,7 @@ import (
 
 func main() {
 
-	region := flag.String("region", "us-east-1", "The AWS region")
+	region := flag.String("region", "us-east-2", "The AWS region")
 	flag.Parse()
 
 	fmt.Printf("Using AWS region: %s\n", *region)
