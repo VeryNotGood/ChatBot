@@ -11,16 +11,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/bedrockruntime"
 )
 
-// InvokeModelWrapper encapsulates Amazon Bedrock actions used in the examples.
-// It contains a Bedrock Runtime client that is used to invoke foundation models.
-type InvokeModelWrapper struct {
-	BedrockRuntimeClient *bedrockruntime.Client
-}
-
-// Each model provider has their own individual request and response formats.
-// For the format, ranges, and default values for Anthropic Claude, refer to:
-// https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-claude.html
-
 type ClaudeRequest struct {
 	Prompt            string   `json:"prompt"`
 	MaxTokensToSample int      `json:"max_tokens_to_sample"`
@@ -34,6 +24,7 @@ type ClaudeResponse struct {
 
 // Invokes Anthropic Claude on Amazon Bedrock to run an inference using the input
 // provided in the request body.
+
 func CreateClient(ctx context.Context, region *string) *bedrockruntime.Client {
 	cfg, err := createSDKConfig(ctx, region)
 	if err != nil {
@@ -55,7 +46,7 @@ func createSDKConfig(ctx context.Context, region *string) (aws.Config, error) {
 }
 
 func InvokeClaude(ctx context.Context, prompt string, client *bedrockruntime.Client) (string, error) {
-	modelId := "anthropic.claude-3-5-sonnet-20240620-v1:0"
+	modelId := "anthropic.claude-instant-v1"
 
 	// Anthropic Claude requires enclosing the prompt as follows:
 	enclosedPrompt := "Human: " + prompt + "\n\nAssistant:"

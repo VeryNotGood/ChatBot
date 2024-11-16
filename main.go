@@ -1,11 +1,13 @@
 package main
 
 import (
+	"bufio"
 	"chatbot/invoke"
 	"context"
 	"flag"
 	"fmt"
 	"log"
+	"os"
 )
 
 func main() {
@@ -19,13 +21,24 @@ func main() {
 
 	client := invoke.CreateClient(ctx, region)
 
-	prompt := "Hello, there!"
+	input := bufio.NewScanner(os.Stdin)
 
-	resp, respError := invoke.InvokeClaude(ctx, prompt, client)
-	if respError != nil {
-		log.Fatal(respError)
+	for {
+		fmt.Print("User: ")
+
+		input.Scan()
+		prompt := input.Text()
+
+		if len(prompt) == 0 {
+			continue
+		}
+
+		resp, respError := invoke.InvokeClaude(ctx, prompt, client)
+		if respError != nil {
+			log.Fatal(respError)
+		}
+
+		fmt.Printf("Claude:%s\n", resp)
 	}
-
-	fmt.Println(resp)
 
 }
